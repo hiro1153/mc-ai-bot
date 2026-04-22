@@ -1,16 +1,23 @@
-app = "mc-ai-bot"
-primary_region = "nrt"
+# fly.toml app configuration file generated for mc-ai-bot-j1pigg on 2026-04-22T10:11:37Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'mc-ai-bot-j1pigg'
+primary_region = 'ams'
 
 [build]
 
-[env]
-  MC_PORT = "19132"
-  MC_USERNAME = "ChatGPT"
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "512mb"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
-
-[processes]
-  app = "node bot.js"
+  memory_mb = 512
