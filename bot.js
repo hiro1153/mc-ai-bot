@@ -1,15 +1,13 @@
-import { createClient } from "bedrock-protocol";
+import bedrock from "bedrock-protocol";
 import OpenAI from "openai";
 
 const SERVER_HOST = process.env.MC_HOST || "YOUR_SERVER_IP";
 const SERVER_PORT = Number(process.env.MC_PORT || 19132);
 const USERNAME = process.env.MC_USERNAME || "AI_Player";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const bot = createClient({
+const bot = bedrock.createClient({
   host: SERVER_HOST,
   port: SERVER_PORT,
   username: USERNAME,
