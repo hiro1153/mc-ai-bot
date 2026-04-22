@@ -43,6 +43,7 @@ const state = {
   joined: false,
   lastChatAt: 0,
   lastTickAt: Date.now(),
+  tickCounter: 0n,
 };
 
 // 敵性 mob リスト
@@ -140,7 +141,7 @@ function sendInput(opts = {}) {
       input_mode: "mouse",
       play_mode: "screen",
       interaction_model: 0,
-      tick: BigInt(Math.floor((Date.now() - state.lastTickAt) / 50)),
+      tick: state.tickCounter++,
       delta: { x: mx, y: 0, z: mz },
     });
 
@@ -151,7 +152,10 @@ function sendInput(opts = {}) {
       z: state.pos.z + mz,
     };
   } catch (e) {
-    // バージョン差で失敗することがあるので静かに無視
+    if (!state._inputErrLogged) {
+      log("入力パケット送信エラー:", e.message);
+      state._inputErrLogged = true;
+    }
   }
 }
 
