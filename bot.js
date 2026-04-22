@@ -1053,7 +1053,16 @@ function startAutoLoop() {
 bot.on("spawn", () => {
   state.joined = true;
   log("サーバーに参加");
-  setTimeout(() => sendChat("やっほー！来たよ〜"), 2000);
+  // ワールドへの初期化完了を通知（これがないと他プレイヤーから見えない）
+  try {
+    bot.queue("set_local_player_as_initialized", {
+      runtime_entity_id: state.runtimeId,
+    });
+    log("プレイヤー初期化完了パケット送信");
+  } catch (e) {
+    log("初期化パケットエラー:", e.message);
+  }
+  setTimeout(() => sendChat("やっほー！来たよ〜"), 3000);
   startAutoLoop();
 });
 
