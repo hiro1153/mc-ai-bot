@@ -1013,6 +1013,12 @@ async function executeDecision(decision, playerName) {
 // 自動行動ループ (47 敵発見, 46 夜判断, 44 HP, 45 空腹, 9 落下回避)
 // =========================================================
 function startAutoLoop() {
+  // 常時 tick: player_auth_input を毎 50ms 送らないと
+  // Bedrock サーバーはプレイヤーを非表示扱いにする
+  setInterval(() => {
+    if (state.joined) sendInput({});
+  }, 50);
+
   // 緊急対応
   setInterval(() => {
     // HP低下 → 回復
@@ -1053,15 +1059,6 @@ function startAutoLoop() {
 bot.on("spawn", () => {
   state.joined = true;
   log("サーバーに参加");
-  // ワールドへの初期化完了を通知（これがないと他プレイヤーから見えない）
-  try {
-    bot.queue("set_local_player_as_initialized", {
-      runtime_entity_id: state.runtimeId,
-    });
-    log("プレイヤー初期化完了パケット送信");
-  } catch (e) {
-    log("初期化パケットエラー:", e.message);
-  }
   setTimeout(() => sendChat("やっほー！来たよ〜"), 3000);
   startAutoLoop();
 });
