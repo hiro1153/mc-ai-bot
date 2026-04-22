@@ -7,22 +7,11 @@ const USERNAME = process.env.MC_USERNAME || "AI_Player";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const OFFLINE_MODE = process.env.MC_OFFLINE === "true";
-
 const bot = bedrock.createClient({
   host: SERVER_HOST,
   port: SERVER_PORT,
   username: USERNAME,
-  offline: OFFLINE_MODE,
-  authTitle: bedrock.Titles.MinecraftNintendoSwitch,
-  flow: "live",
-  onMsaCode: (data) => {
-    console.log("\n=================================================");
-    console.log(" Microsoft アカウントでログインしてください:");
-    console.log(` URL: ${data.verification_uri}`);
-    console.log(` コード: ${data.user_code}`);
-    console.log("=================================================\n");
-  },
+  offline: true,
 });
 
 // =========================================================
